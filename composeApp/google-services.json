@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "710813263973",
+    "project_id": "textit-a5b97",
+    "storage_bucket": "textit-a5b97.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710813263973:android:9fe21c532733312a21fe8c",
+        "android_client_info": {
+          "package_name": "net.qubacy.textit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClsJgH1PymfIdGa7U1_t71MFwcfK8hiHM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
