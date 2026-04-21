@@ -55,3 +55,6 @@ jobs:
         with:
           name: android-apk
           path: mobile/build/outputs/apk/debug/textit.apk
+
+      - name: Output artifact URL
+        run: echo 'Artifact URL = ${{ steps.artifact-upload-step.outputs.artifact-url }}'
