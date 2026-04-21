@@ -12,8 +12,8 @@ android {
         applicationId = "net.qubacy.textit"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = providers.gradleProperty("generalVersionCode").get().toInt()
+        versionName = providers.gradleProperty("generalVersionName").get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
