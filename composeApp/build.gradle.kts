@@ -49,7 +49,3 @@ kotlin {
         }
     }
 }
-
-tasks.register("printVersionName") {
-    println(providers.gradleProperty("generalVersionName").get())
-}
