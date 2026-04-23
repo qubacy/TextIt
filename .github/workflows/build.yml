@@ -59,7 +59,7 @@ jobs:
       - name: Rename debug APK
         run: |
           mv androidApp/build/outputs/apk/debug/androidApp-debug.apk \
-             TextIt-v${{ steps.version.outputs.version }}.apk
+             androidApp/build/outputs/apk/debug/TextIt-v${{ steps.version.outputs.version }}.apk
 
       - name: List files in APK directory
         run: ls -la androidApp/build/outputs/apk/debug
@@ -68,7 +68,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: androidApp/build/outputs/apk/debug/*.apk
+          path: androidApp/build/outputs/apk/debug/TextIt-v${{ steps.version.outputs.version }}.apk
 
       - name: Output artifact URL
         run: echo 'Artifact URL = ${{ steps.artifact-upload-step.outputs.artifact-url }}'
