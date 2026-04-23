@@ -61,6 +61,9 @@ jobs:
           mv androidApp/build/outputs/apk/debug/androidApp-debug.apk \
              TextIt-v${{ steps.version.outputs.version }}.apk
 
+      - name: List files in APK directory
+        run: ls -la androidApp/build/outputs/apk/debug
+
       - name: Upload Android debug APK
         uses: actions/upload-artifact@v4
         with:
