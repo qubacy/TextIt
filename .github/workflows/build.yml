@@ -53,7 +53,7 @@ jobs:
       - name: Reading version
         id: version
         run: |
-          VERSION=$(./gradlew properties -q | grep "^generalVersionName:" | awk '{print $2}')
+          VERSION=$(./gradlew properties -q | grep "^generalVersionName:" | awk '{print $2}' | tr -d '"')
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Rename debug APK
