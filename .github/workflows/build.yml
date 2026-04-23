@@ -65,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: androidApp/build/outputs/apk/debug/TextIt-v${{ steps.version.outputs.version }}.apk
+          path: androidApp/build/outputs/apk/debug/*.apk
 
       - name: Output artifact URL
         run: echo 'Artifact URL = ${{ steps.artifact-upload-step.outputs.artifact-url }}'
