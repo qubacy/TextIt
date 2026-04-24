@@ -18,12 +18,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Gradle setup
-        uses: ./.github/actions/gradle-setup
+      - name: Prepare release APK
+        uses: ././github/actions/prepare-apk
+        with:
+          build-type: release
 
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-
-      - name: Build Android release APK
-        run: ./gradlew :androidApp:assembleRelease
-
+# todo: To be finished later

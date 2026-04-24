@@ -41,25 +41,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Gradle setup
-        uses: ./.github/actions/gradle-setup
-
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-
-      - name: Build Android debug APK
-        run: ./gradlew :androidApp:assembleDebug
-
-      - name: Reading version
-        id: version
-        run: |
-          VERSION=$(./gradlew properties -q | grep "^generalVersionName:" | awk '{print $2}' | tr -d '"')
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-
-      - name: Rename debug APK
-        run: |
-          mv androidApp/build/outputs/apk/debug/androidApp-debug.apk \
-             androidApp/build/outputs/apk/debug/TextIt-v${{ steps.version.outputs.version }}.apk
+      - name: Prepare debug APK
+        uses: ././github/actions/prepare-apk
+        with:
+          build-type: debug
 
       - name: Upload Android debug APK
         uses: actions/upload-artifact@v4
