@@ -1,5 +1,9 @@
 name: prepare-apk
 description: Prepare APK
+outputs:
+  version-name:
+    description: App version name
+    value: ${{ steps.version.outputs.version }}
 runs:
   using: "composite"
   steps:
