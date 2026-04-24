@@ -16,7 +16,7 @@ runs:
 
     - name: Reading version
       id: version
-      uses: gradle/actions/setup-gradle@v5.0.0
+      shell: bash
       run: |
         VERSION=$(./gradlew properties -q | grep "^generalVersionName:" | awk '{print $2}' | tr -d '"')
         echo "version=$VERSION" >> "$GITHUB_OUTPUT"
