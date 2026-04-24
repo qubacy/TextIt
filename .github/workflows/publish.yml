@@ -19,8 +19,24 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Prepare release APK
+        id: prepare-apk
         uses: ././github/actions/prepare-apk
         with:
           build-type: release
 
-# todo: To be finished later
+      - name: Create GitHub Release with APK
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="v${{ steps.prepare-apk.outputs.version-name }}"
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git tag "$TAG"
+          git push origin "$TAG"
+          
+          gh release create "$TAG" \
+            "TextIt-v${{ steps.version.outputs.version }}.apk" \
+            --title "$TAG" \
+            --notes "Automated APK release from master"
