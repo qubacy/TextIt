@@ -1,0 +1,32 @@
+name: prepare-apk
+description: Prepare APK
+outputs:
+  version-name:
+    description: App version name
+    value: ${{ steps.version.outputs.version }}
+runs:
+  using: "composite"
+  steps:
+    - name: Gradle setup
+      uses: ./.github/actions/gradle-setup
+
+    - name: Make gradlew executable
+      shell: bash
+      run: chmod +x ./gradlew
+
+    - name: Build Android APK
+      shell: bash
+      run: ./gradlew :androidApp:assemble${{ inputs.build-type }}
+
+    - name: Reading version
+      id: version
+      shell: bash
+      run: |
+        VERSION=$(./gradlew properties -q | grep "^generalVersionName:" | awk '{print $2}' | tr -d '"')
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+    - name: Rename APK
+      shell: bash
+      run: |
+        mv androidApp/build/outputs/apk/${{ inputs.build-type }}/androidApp-${{ inputs.build-type }}.apk \
+           androidApp/build/outputs/apk/${{ inputs.build-type }}/TextIt-v${{ steps.version.outputs.version }}.apk
