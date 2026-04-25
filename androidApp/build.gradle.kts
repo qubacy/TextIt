@@ -1,9 +1,22 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.googleServices)
 }
+
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) {
+        file.inputStream().use { load(it) }
+    }
+}
+
+fun getProperty(name: String): String? =
+    localProperties.getProperty(name)
+        ?: providers.gradleProperty(name).orNull
 
 android {
     namespace = "net.qubacy.textit"
@@ -19,9 +32,26 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        val rawStoreFile = getProperty("RELEASE_STORE_FILE")
+
+        create("release") {
+            if (!rawStoreFile.isNullOrEmpty()) {
+                storeFile = rootProject.file(rawStoreFile)
+                storePassword = getProperty("RELEASE_STORE_PASSWORD")
+                keyAlias = getProperty("RELEASE_KEY_ALIAS")
+                keyPassword = getProperty("RELEASE_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
+        debug {}
+
         release {
             isMinifyEnabled = false
+            isDebuggable = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

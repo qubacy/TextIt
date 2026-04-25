@@ -3,7 +3,10 @@ description: Prepare APK
 outputs:
   version-name:
     description: App version name
-    value: ${{ steps.version.outputs.version }}
+    value: ${{ steps.build.outputs.version }}
+  apk-path:
+    description: APK file location
+    value: ${{ steps.rename.outputs.apk-path }}
 runs:
   using: "composite"
   steps:
@@ -14,19 +17,23 @@ runs:
       shell: bash
       run: chmod +x ./gradlew
 
-    - name: Build Android APK
+    - name: Build Android APK and read version
+      id: build
       shell: bash
-      run: ./gradlew :androidApp:assemble${{ inputs.build-type }}
-
-    - name: Reading version
-      id: version
-      shell: bash
+      env:
+        ORG_GRADLE_PROJECT_RELEASE_STORE_FILE: ${{ env.RELEASE_STORE_FILE }}
+        ORG_GRADLE_PROJECT_RELEASE_STORE_PASSWORD: ${{ env.RELEASE_STORE_PASSWORD }}
+        ORG_GRADLE_PROJECT_RELEASE_KEY_ALIAS: ${{ env.RELEASE_KEY_ALIAS }}
+        ORG_GRADLE_PROJECT_RELEASE_KEY_PASSWORD: ${{ env.RELEASE_KEY_PASSWORD }}
       run: |
-        VERSION=$(./gradlew properties -q | grep "^generalVersionName:" | awk '{print $2}' | tr -d '"')
+        VERSION=$(./gradlew :androidApp:assemble${{ inputs.build-type }} properties -q | grep "^generalVersionName:" | awk '{print $2}' | tr -d '"')
         echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
     - name: Rename APK
+      id: rename
       shell: bash
       run: |
-        mv androidApp/build/outputs/apk/${{ inputs.build-type }}/androidApp-${{ inputs.build-type }}.apk \
-           androidApp/build/outputs/apk/${{ inputs.build-type }}/TextIt-v${{ steps.version.outputs.version }}.apk
+        APK_DIR="androidApp/build/outputs/apk/${{ inputs.build-type }}"
+        APK_PATH="$APK_DIR/TextIt-v${{ steps.build.outputs.version }}.apk"
+        mv $APK_DIR/*.apk $APK_PATH
+        echo "apk-path=$APK_PATH" >> "$GITHUB_OUTPUT"
