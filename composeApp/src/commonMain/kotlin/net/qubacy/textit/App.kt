@@ -14,10 +14,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import net.qubacy.core.resources.Res
+import net.qubacy.core.resources.compose_multiplatform
 import org.jetbrains.compose.resources.painterResource
-
-import textit.composeapp.generated.resources.Res
-import textit.composeapp.generated.resources.compose_multiplatform
 
 @Composable
 @Preview
